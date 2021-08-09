@@ -1,0 +1,51 @@
+buildscript {
+    repositories {
+        mavenLocal()
+        mavenCentral()
+        maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
+    }
+    dependencies {
+        classpath 'com.mobidevelop.robovm:robovm-gradle-plugin:2.3.12'
+    }
+}
+
+apply plugin: 'java'
+apply plugin: 'robovm'
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+    maven { url 'https://jitpack.io' }
+    maven {
+        url = "https://oss.sonatype.org/content/repositories/snapshots/"
+    }
+}
+
+ext {
+    roboVMVersion = "2.3.12"
+}
+
+robovm {
+}
+
+dependencies {
+    compile "com.mobidevelop.robovm:robovm-rt:${roboVMVersion}"
+    compile "com.mobidevelop.robovm:robovm-cocoatouch:${roboVMVersion}"
+    implementation ('org.ergoplatform:ergo-appkit_2.11:a871df40-SNAPSHOT') {
+        exclude group: 'org.bouncycastle', module: 'bcprov-jdk15on'
+        exclude group: 'org.bitbucket.inkytonik.kiama', module: 'kiama_2.11'
+        exclude group: 'com.google.guava', module: 'guava'
+    }
+    // kiama needs an own build for JRE7 compatibility
+    implementation ('com.github.MrStahlfelge.kiama:core_2.11:2.1.1') {
+        exclude group: 'com.google.guava', module: 'guava'
+    }
+    implementation ('com.github.MrStahlfelge.kiama:library_2.11:2.1.1') {
+        exclude group: 'com.google.guava', module: 'guava'
+    }
+    implementation "com.google.guava:guava:20.0"
+    implementation "org.bouncycastle:bcprov-jdk15to18:1.66"
+    testCompile "junit:junit:4.12"
+}
